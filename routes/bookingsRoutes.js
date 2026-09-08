@@ -76,6 +76,30 @@ const myBookingsRoutes = (myBookingsCollection) => {
     }
   });
 
+ router.get("/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const bookings = await myBookingsCollection
+      .find({
+        "user.id": userId,
+      })
+      .sort({ createdAt: -1 })
+      .toArray();
+
+    res.status(200).json({
+      success: true,
+      data: bookings,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch bookings",
+    });
+  }
+});
  router.get("/myBookings/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
