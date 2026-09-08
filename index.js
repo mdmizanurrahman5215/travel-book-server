@@ -4,6 +4,7 @@ const cors = require("cors");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 
 const destinationRoutes = require("./routes/destinationsRoutes");
+const myBookingsRoutes = require("./routes/bookingsRoutes");
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ async function run() {
 
     const db = client.db("travelbook");
     const destinationCollection = db.collection("destinations");
+    const myBookingsCollection = db.collection("myBookings");
 
     await client.db("admin").command({ ping: 1 });
 
@@ -38,6 +40,12 @@ async function run() {
   "/api/destinations",
   destinationRoutes(destinationCollection)
 );
+   
+    app.use(
+  "/api/myBookings",
+  myBookingsRoutes(myBookingsCollection)
+);
+  
 
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
