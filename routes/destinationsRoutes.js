@@ -1,5 +1,6 @@
 const express = require("express");
 const { ObjectId } = require("mongodb");
+const { verifyToken } = require("../middleware/authMiddleware");
 
 const validateDestination = (data) => {
   const errors = [];
@@ -76,9 +77,10 @@ const destinationRoutes = (destinationCollection) => {
     }
   });
 
-  router.get("/:id", async (req, res) => {
+  router.get("/:id",verifyToken, async (req, res) => {
     try {
       const { id } = req.params;
+       console.log("AUTH HEADER:", req.headers.authorization);
 
       if (!ObjectId.isValid(id)) {
         return res.status(400).json({

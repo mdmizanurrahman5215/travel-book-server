@@ -1,12 +1,14 @@
+
+require("dotenv").config();
 const express = require("express");
-const dotenv = require("dotenv");
+
 const cors = require("cors");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 
 const destinationRoutes = require("./routes/destinationsRoutes");
 const myBookingsRoutes = require("./routes/bookingsRoutes");
 
-dotenv.config();
+
 
 const app = express();
 
@@ -17,6 +19,7 @@ app.use(express.json());
 
 
 const PORT = process.env.PORT || 5000;
+console.log("CLIENT_URL:", process.env.CLIENT_URL);
 
 const client = new MongoClient(process.env.URI, {
   serverApi: {
@@ -28,13 +31,13 @@ const client = new MongoClient(process.env.URI, {
 
 async function run() {
   try {
-    await client.connect();
+    // await client.connect();
 
     const db = client.db("travelbook");
     const destinationCollection = db.collection("destinations");
     const myBookingsCollection = db.collection("myBookings");
 
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
 
     app.use(
   "/api/destinations",
